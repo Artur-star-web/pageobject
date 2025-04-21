@@ -29,7 +29,7 @@ public class MoneyTransferTest {
         var secondCardBalance = dashboardPage.getCardBalance(1);
 
 
-        int transferAmount = 200;
+        int transferAmount = 10000;
 
 
         var transferPage = dashboardPage.chooseCardToReplenish(0);
