@@ -29,7 +29,7 @@ public class MoneyTransferTest {
         var secondCardBalance = dashboardPage.getCardBalance(1);
 
 
-        int transferAmount = 10000;
+        int transferAmount = 1;
 
 
         var transferPage = dashboardPage.chooseCardToReplenish(0);
@@ -45,4 +45,29 @@ public class MoneyTransferTest {
         assertEquals(expectedFirstCardBalance, dashboardPage.getCardBalance(0));
         assertEquals(expectedSecondCardBalance, dashboardPage.getCardBalance(1));
     }
+
+    @Test
+    void shouldNotAllowTransferMoreThanAvailable() {
+        open("http://localhost:9999");
+
+        var loginPage = new LoginPage();
+        var authInfo = DataHelper.getAuthInfo();
+        var verificationPage = loginPage.validLogin(authInfo);
+        var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
+        var dashboardPage = verificationPage.validVerify(verificationCode);
+
+        // Получаем баланс второй карты — с неё будем списывать
+        var balanceFromCard = dashboardPage.getCardBalance(1);
+
+        // Указываем сумму на 1 рубль больше, чем есть
+        int transferAmount = balanceFromCard + 1;
+
+        // Выбираем первую карту как получателя (туда пополняем)
+        var transferPage = dashboardPage.chooseCardToReplenish(0);
+
+        // Пытаемся перевести — ожидаем ошибку
+        transferPage.makeTransfer(transferAmount, DataHelper.getCardNumber(1));
+
+    }
+
 }
