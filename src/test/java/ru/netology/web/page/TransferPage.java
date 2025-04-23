@@ -1,5 +1,6 @@
 package ru.netology.web.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -16,5 +17,9 @@ public class TransferPage {
         return new DashboardPage();
     }
 
+    public void shouldShowError(String expectedMessage) {
+        $("[data-test-id=error-notification]").shouldBe(Condition.visible)
+                .shouldHave(Condition.text(expectedMessage));
+    }
 
 }

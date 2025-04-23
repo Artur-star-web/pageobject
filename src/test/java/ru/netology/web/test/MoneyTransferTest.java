@@ -63,6 +63,7 @@ public class MoneyTransferTest {
         var transferPage = dashboardPage.chooseCardToReplenish(0);
 
         transferPage.makeTransfer(transferAmount, DataHelper.getCardNumber(1));
+        transferPage.shouldShowError("Ошибка! Недостаточно средств на карте.");
 
     }
 
